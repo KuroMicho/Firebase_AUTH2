@@ -29,6 +29,7 @@
   </div>
 </template>  
 
+
 <script>
 import { auth } from "../services/firebase";
 
