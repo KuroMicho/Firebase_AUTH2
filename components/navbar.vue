@@ -14,16 +14,54 @@
 
     <b-collapse is-nav id="menu">
       <b-navbar-nav>
-        <b-nav-item href="/login">Iniciar Sesion</b-nav-item>
-        <b-nav-item href="/registro">Registro</b-nav-item>
         <b-nav-item href="/contacto">Contacto</b-nav-item>
-        <b-nav-item href="/productos">Productos</b-nav-item>
-        <b-nav-item href="/categorias">Categoria</b-nav-item>
+        <b-nav-item href="/productos" v-if="user">Productos</b-nav-item>
+        <b-nav-item href="/categorias" v-if="user">Categoria</b-nav-item>
       </b-navbar-nav>
+
+      <b-navbar-nav class="ml-auto">
+        <b-nav-item href="/login" v-if="!user">Iniciar Sesion</b-nav-item>
+        <b-nav-item href="/registro" v-if="!user">Registro</b-nav-item>
+        <img :src="avatar" v-if="avatar" width="80px" height="80px">
+        <h1 v-else></h1>
+      </b-navbar-nav>
+
+      <b-dropdown :text="name" variant="outline-danger" class="m-md-3" v-if="user">
+        <b-dropdown-item @click="cerrar()">Salir</b-dropdown-item>
+      </b-dropdown>
     </b-collapse>
   </b-navbar>
 </template>
 
 <script>
-export default {};
+import { auth } from "../services/firebase";
+export default {
+  data() {
+    return {
+      user: false,
+      avatar: false
+    };
+  },
+
+  created() {
+    auth.onAuthStateChanged(user => {
+      this.user = user;
+      this.name = user.displayName;
+      this.avatar = user.photoURL;
+    });
+  },
+  methods: {
+    cerrar() {
+      auth
+        .signOut()
+        .then(function() {
+          this.$router.push({ path: "/" });
+        })
+        .catch(function(error) {
+          // An error happened.
+        });
+    }
+  }
+};
 </script>
+

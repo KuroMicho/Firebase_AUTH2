@@ -81,6 +81,7 @@ export default {
           // ...
         });
       alert("Ha iniciado sesion.");
+      this.$router.push({ path: "/" });
     },
     checkFormValidity() {
       const valid = this.$refs.form.checkValidity();

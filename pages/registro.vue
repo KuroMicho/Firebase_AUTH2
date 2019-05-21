@@ -6,6 +6,11 @@
         <h1>Registrate Aqui</h1>
         <b-form @submit.prevent="registrarUsuario">
           <div class="col-sm-12">
+            <b-form-group label="Nombre:" label-for="nombre">
+              <b-input type="text" required placeholder="Ingrese su nombre" v-model="form.name"/>
+            </b-form-group>
+          </div>
+          <div class="col-sm-12">
             <b-form-group label="Email:" label-for="email">
               <b-input type="email" required placeholder="Ingrese su Email" v-model="form.email"/>
             </b-form-group>
@@ -38,8 +43,10 @@ export default {
     return {
       form: {
         email: "",
-        password: ""
-      }
+        password: "",
+        name: ""
+      },
+      photoURL: null
     };
   },
   methods: {
@@ -48,27 +55,26 @@ export default {
         var user;
         user = auth
           .createUserWithEmailAndPassword(this.form.email, this.form.password)
-          .catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-          });
-        var email;
-        user = auth.currentUser;
-        if (this.form.email == user.email) {
-          alert("El correo ya se ha registrado");
-        } else {
-          user
-            .sendEmailVerification()
-            .then(function() {
-              alert("Email Enviado");
-            })
-            .catch(function(error) {
-              // An error happened.
+          .then(res => {
+            res.user.updateProfile({
+              displayName: this.form.name,
+              photoURL:
+                "https://http2.mlstatic.com/llavero-tokyo-ghoul-kaneki-ken-anteiku-kawaii-envio-gratis-D_NQ_NP_866853-MLM29011339098_122018-F.jpg"
             });
-        }
+            user = auth.currentUser;
+
+            user
+              .sendEmailVerification()
+              .then(function() {
+                alert("Usuario Registrado. Verifique su correo.");
+              })
+              .catch(function(error) {
+                // An error happened.
+              });
+          });
+        this.$router.push({ path: "/" });
       } else {
-        alert("Contreseña debil");
+        alert("Contraseña debil");
       }
     }
   }
@@ -87,7 +93,7 @@ export default {
 
 .login-box {
   width: 320px;
-  height: 360px;
+  height: 430px;
   background: #fff;
   color: #000;
   top: 60%;
@@ -125,7 +131,7 @@ export default {
   width: 100%;
   margin-bottom: 20px;
 }
-
+.login-box input[type="text"],
 .login-box input[type="email"],
 .login-box input[type="password"] {
   border: none;
