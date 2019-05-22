@@ -82,10 +82,6 @@ export default {
           sortable: false
         },
         {
-          key: "id",
-          sortable: true
-        },
-        {
           key: "nombre",
           sortable: true
         },
@@ -94,11 +90,11 @@ export default {
           sortable: true
         },
         {
-          key: "categorias",
+          key: "cantidad",
           sortable: true
         },
         {
-          key: "cantidad",
+          key: "categorias",
           sortable: true
         },
 

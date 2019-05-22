@@ -74,14 +74,15 @@ export default {
     login() {
       auth
         .signInWithEmailAndPassword(this.form.email, this.form.password)
+        .then(res => {
+          alert("Ha iniciado sesion.");
+          this.$router.push({ path: "/" });
+        })
         .catch(function(error) {
           // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
+          alert(error.message);
           // ...
         });
-      alert("Ha iniciado sesion.");
-      this.$router.push({ path: "/" });
     },
     checkFormValidity() {
       const valid = this.$refs.form.checkValidity();

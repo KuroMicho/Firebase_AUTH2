@@ -62,17 +62,16 @@ export default {
                 "https://http2.mlstatic.com/llavero-tokyo-ghoul-kaneki-ken-anteiku-kawaii-envio-gratis-D_NQ_NP_866853-MLM29011339098_122018-F.jpg"
             });
             user = auth.currentUser;
-
             user
               .sendEmailVerification()
               .then(function() {
                 alert("Usuario Registrado. Verifique su correo.");
               })
               .catch(function(error) {
-                // An error happened.
               });
+
+            this.$router.push({ path: "/" });
           });
-        this.$router.push({ path: "/" });
       } else {
         alert("Contraseña debil");
       }
