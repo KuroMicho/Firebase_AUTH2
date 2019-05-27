@@ -13,10 +13,19 @@
             accept="image/*"
             v-model="imageProduct"
             required
+            @change="onFileChange"
             placeholder="Cargar Imagen"
             drop-placeholder="Cargar Imagen"
           />
         </b-form-group>
+
+        <div id="preview">
+          <h1 v-if="url">
+            ImagenSubida
+            <img v-if="url" :src="url" width="120px" height="120px">
+          </h1>
+        </div>
+
         <b-form-group label="Nombre:" label-for="nombre">
           <b-form-input
             id="nombre"
@@ -102,10 +111,12 @@ export default {
         precio: "",
         categorias: ""
       },
+      url: null,
       guardando: false,
       imageProduct: null
     };
   },
+
   methods: {
     guardarProducto() {
       this.guardando = true;
@@ -120,6 +131,14 @@ export default {
             this.$router.push({ path: "/productos" });
           });
       });
+    },
+    onFileChange(e) {
+      const file = e.target.files[0];
+      if (this.url == null) {
+        this.url = URL.createObjectURL(file);
+      } else {
+       this.url = URL.revokeObjectURL(file);
+      }
     }
   }
 };
